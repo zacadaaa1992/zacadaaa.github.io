@@ -1,60 +1,848 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stepan Nikonov | Technical VA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stepan Nikonov — Technical VA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --deep: #111111;
+      --card: #161616;
+      --border: #2a2a2a;
+      --gold: #c9a84c;
+      --gold-light: #e2c97e;
+      --gold-dim: rgba(201,168,76,0.15);
+      --white: #f0ece4;
+      --muted: #888880;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 140px 60px 80px 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-summary {
+      font-size: 0.82rem;
+      line-height: 1.9;
+      color: #aaa9a2;
+      max-width: 440px;
+      margin-bottom: 56px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1s forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--gold);
+      color: var(--black);
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 13px 35px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* HERO RIGHT — photo */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 35%);
+      z-index: 2;
+    }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(to top, var(--black), transparent);
+      z-index: 2;
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.5s forwards;
+      filter: grayscale(20%) contrast(1.05);
+    }
+
+    /* fallback if no photo */
+    .hero-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-photo-placeholder svg {
+      width: 120px;
+      opacity: 0.15;
+    }
+
+    /* decorative gold line */
+    .hero-line {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 1px;
+      height: 200px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      transform: translateY(-50%);
+      z-index: 3;
+    }
+
+    /* ── SECTION SHARED ── */
+    section {
+      padding: 120px 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 60px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 72px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    /* ── SKILLS ── */
+    #skills {
+      background: var(--deep);
+      max-width: 100%;
+      padding: 120px 0;
+    }
+
+    #skills .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+    }
+
+    .skill-card {
+      background: var(--card);
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-card:hover { background: #1a1a1a; }
+
+    .skill-card-number {
+      font-family: var(--serif);
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--gold-dim);
+      line-height: 1;
+      margin-bottom: 20px;
+      transition: color 0.3s;
+    }
+
+    .skill-card:hover .skill-card-number {
+      color: rgba(201,168,76,0.3);
+    }
+
+    .skill-card-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-size: 0.72rem;
+      color: #999992;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      letter-spacing: 0.05em;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .skill-card:hover .skill-tag {
+      border-color: rgba(201,168,76,0.3);
+      color: var(--white);
+    }
+
+    /* ── EXPERIENCE / TIMELINE ── */
+    #experience { padding: 120px 60px; }
+
+    .timeline {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--border));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 72px;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -44px;
+      top: 8px;
+      width: 9px;
+      height: 9px;
+      border: 1px solid var(--gold);
+      background: var(--black);
+      transform: rotate(45deg);
+    }
+
+    .timeline-period {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .timeline-role {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .timeline-company {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .timeline-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .timeline-items li {
+      font-size: 0.82rem;
+      color: #aaa9a2;
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.8;
+    }
+
+    .timeline-items li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+      opacity: 0.6;
+    }
+
+    /* ── PRINCIPLES ── */
+    #principles {
+      background: var(--deep);
+      max-width: 100%;
+      padding: 120px 0;
+    }
+
+    #principles .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .principle-card {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+    }
+
+    .principle-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .principle-text {
+      font-size: 0.8rem;
+      color: #999992;
+      line-height: 1.9;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 120px 60px;
+      text-align: center;
+    }
+
+    .contact-tagline {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 64px;
+      line-height: 1.2;
+    }
+
+    .contact-tagline strong {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--white);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 64px;
+      flex-wrap: wrap;
+    }
+
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+
+    .contact-link:hover { color: var(--gold); }
+
+    .contact-link-label {
+      font-size: 0.55rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+    }
+
+    .contact-link-value {
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-copy {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: #555550;
+      text-transform: uppercase;
+    }
+
+    /* ── DECORATIVE GOLD RULE ── */
+    .gold-rule {
+      width: 80px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+      margin: 0 auto 64px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 20px 28px; }
+      .nav-links { gap: 24px; }
+
+      #hero { grid-template-columns: 1fr; }
+
+      .hero-left {
+        padding: 120px 28px 60px;
+        min-height: 100vh;
+        justify-content: flex-end;
+      }
+
+      .hero-right {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: 0.25;
+      }
+
+      section { padding: 80px 28px; }
+      #skills, #principles { padding: 80px 0; }
+      #skills .inner, #principles .inner { padding: 0 28px; }
+
+      .skills-grid { grid-template-columns: 1fr; }
+      .principles-grid { grid-template-columns: 1fr; }
+
+      footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 28px; }
+      #contact { padding: 80px 28px; }
+      .contact-divider { display: none; }
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-white font-sans">
+<body>
 
-    <header class="h-screen flex flex-col justify-center items-center text-center p-5">
-        <div class="mb-6 bg-blue-500 w-24 h-24 rounded-full flex items-center justify-center text-4xl shadow-lg shadow-blue-500/50">
-            <i class="fas fa-robot"></i>
-        </div>
-        <h1 class="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
-            Stepan Nikonov
-        </h1>
-        <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mb-8">
-            Technical VA & Automation Specialist. I bridge the gap between administrative routine and technical efficiency.
-        </p>
-        <div class="flex gap-4">
-            <a href="https://wa.me/YOUR_PHONE_NUMBER" class="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-full font-bold transition">
-                Hire Me
-            </a>
-            <a href="#skills" class="border border-slate-700 hover:bg-slate-800 px-8 py-3 rounded-full font-bold transition">
-                Skills
-            </a>
-        </div>
-    </header>
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">S. Nikonov</div>
+    <ul class="nav-links">
+      <li><a href="#skills" onclick="event.preventDefault(); document.getElementById('skills').scrollIntoView({behavior:'smooth'})">Skills</a></li>
+      <li><a href="#experience" onclick="event.preventDefault(); document.getElementById('experience').scrollIntoView({behavior:'smooth'})">Experience</a></li>
+      <li><a href="#contact" onclick="event.preventDefault(); document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</a></li>
+    </ul>
+  </nav>
 
-    <section id="skills" class="py-20 bg-slate-800/50">
-        <div class="container mx-auto px-5">
-            <h2 class="text-3xl font-bold text-center mb-12">Core Expertise</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                <div class="p-8 bg-slate-800 rounded-2xl border border-slate-700">
-                    <i class="fas fa-code-branch text-4xl text-blue-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">n8n & Zapier</h3>
-                    <p class="text-slate-400">Complex workflow automation and API integrations.</p>
-                </div>
-                <div class="p-8 bg-slate-800 rounded-2xl border border-slate-700">
-                    <i class="fas fa-database text-4xl text-emerald-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">HubSpot & CRM</h3>
-                    <p class="text-slate-400">Database management and lead flow optimization.</p>
-                </div>
-                <div class="p-8 bg-slate-800 rounded-2xl border border-slate-700">
-                    <i class="fas fa-chart-line text-4xl text-purple-400 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">Data Viz</h3>
-                    <p class="text-slate-400">Google Sheets dashboards and data analysis.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- HERO -->
+  <section id="hero" style="max-width:100%; padding:0; margin:0;">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Technical Virtual Assistant</p>
+      <h1 class="hero-name">Stepan<br><em>Nikonov</em></h1>
+      <p class="hero-title">Operations Intelligence, Automated.</p>
+      <p class="hero-summary">
+        8 years of operations experience distilled into one hire.
+        I replace the gap between your admin routine and your technical needs —
+        managing workflows, organizing data, and shipping automations that
+        eliminate manual work before you notice it exists.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary" onclick="event.preventDefault(); document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Hire Me</a>
+        <a href="#experience" class="btn-ghost" onclick="event.preventDefault(); document.getElementById('experience').scrollIntoView({behavior:'smooth'})">View Work</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <img
+        src="photo.jpg"
+        alt="Stepan Nikonov"
+        class="hero-photo"
+        onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\'hero-photo-placeholder\'></div>';"
+      />
+      <div class="hero-line"></div>
+    </div>
+  </section>
 
-    <footer class="py-10 text-center text-slate-500 border-t border-slate-800">
-        <p>© 2026 Stepan Nikonov. Built with Gemini & GitHub Pages.</p>
-    </footer>
+  <!-- SKILLS -->
+  <section id="skills" style="padding:120px 0; max-width:100%;">
+    <div class="inner">
+      <p class="section-label">Capabilities</p>
+      <h2 class="section-title">Where admin ends,<br><em>automation begins</em></h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-card-number">01</div>
+          <div class="skill-card-title">Administrative</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Email Triage</span>
+            <span class="skill-tag">Inbox Zero</span>
+            <span class="skill-tag">File Organization</span>
+            <span class="skill-tag">Deadline Management</span>
+            <span class="skill-tag">Process Documentation</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-number">02</div>
+          <div class="skill-card-title">Technical</div>
+          <div class="skill-tags">
+            <span class="skill-tag">n8n Automation</span>
+            <span class="skill-tag">HubSpot CRM</span>
+            <span class="skill-tag">API Integrations</span>
+            <span class="skill-tag">Data Analysis</span>
+            <span class="skill-tag">Excel / Google Sheets</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-number">03</div>
+          <div class="skill-card-title">Tools & Platforms</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Google Workspace</span>
+            <span class="skill-tag">Notion</span>
+            <span class="skill-tag">Slack</span>
+            <span class="skill-tag">Telegram</span>
+            <span class="skill-tag">1C</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Experience</p>
+    <h2 class="section-title">Eight years.<br><em>One direction.</em></h2>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2023 — Present</div>
+        <h3 class="timeline-role">Technical Virtual Assistant</h3>
+        <p class="timeline-company">Upwork &amp; Independent Freelance</p>
+        <ul class="timeline-items">
+          <li>Manage workflows and admin tasks for international clients using Google Workspace, Notion, and HubSpot.</li>
+          <li>Build and maintain n8n automations: AI-based email classification, Google Sheets routing, and Telegram alert pipelines.</li>
+          <li>Implement strict 3-label email systems (Action Required / Waiting On / FYI) with standardized response templates.</li>
+          <li>Anticipate project blockers by enforcing a proactive 48-hour deadline buffer for tasks with external dependencies.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-period">2015 — 2023</div>
+        <h3 class="timeline-role">Operations &amp; Admin Specialist</h3>
+        <p class="timeline-company">Railway Company</p>
+        <ul class="timeline-items">
+          <li>Managed high-volume operational data, reporting, and daily admin workflows under strict procedural compliance.</li>
+          <li>Configured custom 1C modules for team-wide use — translating business logic directly into operational systems.</li>
+          <li>Coordinated multi-department information flow to ensure data accuracy and prevent operational bottlenecks.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section id="principles" style="padding:120px 0; max-width:100%;">
+    <div class="inner">
+      <p class="section-label">Working Principles</p>
+      <h2 class="section-title">How I<br><em>operate</em></h2>
+      <div class="principles-grid">
+        <div class="principle-card">
+          <h3 class="principle-title">Solutions First</h3>
+          <p class="principle-text">
+            When tasks are unclear, I research context and deliver actionable options —
+            "Option A is faster, Option B is scalable" — rather than waiting for step-by-step instructions.
+          </p>
+        </div>
+        <div class="principle-card">
+          <h3 class="principle-title">Proactive Communication</h3>
+          <p class="principle-text">
+            Status updates arrive before they're requested. Expectations are double-checked
+            before any project begins. No surprises.
+          </p>
+        </div>
+        <div class="principle-card">
+          <h3 class="principle-title">Information Architecture</h3>
+          <p class="principle-text">
+            Files organized by how teams actually search — Project › Client › Doc Type —
+            with version control that eliminates confusion from the start.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="contact-tagline">
+      Ready to reduce your workload<br>
+      <strong>by hiring one person instead of two?</strong>
+    </p>
+    <div class="gold-rule"></div>
+    <div class="contact-links">
+      <a href="mailto:zacadaaa1992@gmail.com" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-value">zacadaaa1992@gmail.com</span>
+      </a>
+      <div class="contact-divider"></div>
+      <a href="https://t.me/zacadaaa1992" target="_blank" class="contact-link">
+        <span class="contact-link-label">Telegram</span>
+        <span class="contact-link-value">@zacadaaa1992</span>
+      </a>
+      <div class="contact-divider"></div>
+      <a href="https://linkedin.com/in/stepan-nikonov-014017372" target="_blank" class="contact-link">
+        <span class="contact-link-label">LinkedIn</span>
+        <span class="contact-link-value">stepan-nikonov</span>
+      </a>
+    </div>
+    <a href="mailto:zacadaaa1992@gmail.com" class="btn-primary">Get In Touch</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Stepan Nikonov</div>
+    <div class="footer-copy">Technical Virtual Assistant &nbsp;·&nbsp; Philippines</div>
+  </footer>
+
+  <script>
+    // Scroll-triggered reveal for timeline items
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
+
+    // Subtle parallax on hero photo
+    const heroPhoto = document.querySelector('.hero-photo');
+    if (heroPhoto) {
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        heroPhoto.style.transform = `translateY(${scrollY * 0.2}px)`;
+      }, { passive: true });
+    }
+  </script>
 
 </body>
 </html>
