@@ -88,40 +88,69 @@
     /* ── HERO ── */
     #hero {
       min-height: 100vh;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: relative;
       overflow: hidden;
-      background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 60%),
-                  radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
+      padding: 0 60px;
+      text-align: center;
+    }
+
+    /* decorative background lines */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      pointer-events: none;
     }
 
     .hero-left {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 140px 60px 80px 60px;
+      align-items: center;
       position: relative;
       z-index: 2;
-      max-width: 800px;
+      max-width: 1000px;
+      width: 100%;
+      padding-top: 80px;
     }
 
     .hero-eyebrow {
       font-size: 0.6rem;
-      letter-spacing: 0.35em;
+      letter-spacing: 0.45em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 32px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.2s forwards;
     }
 
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
     .hero-name {
       font-family: var(--serif);
-      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-size: clamp(5rem, 11vw, 10rem);
       font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      margin-bottom: 8px;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.4s forwards;
     }
@@ -129,11 +158,12 @@
     .hero-name em {
       font-style: italic;
       color: var(--gold-light);
+      display: block;
     }
 
     .hero-title {
       font-family: var(--serif);
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-size: clamp(1rem, 2vw, 1.35rem);
       font-weight: 300;
       font-style: italic;
       color: var(--muted);
@@ -142,11 +172,20 @@
       animation: fadeUp 0.8s ease 0.6s forwards;
     }
 
+    .hero-divider {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 0 auto 48px;
+      opacity: 0;
+      animation: fadeIn 1s ease 0.7s forwards;
+    }
+
     .hero-summary {
       font-size: 0.82rem;
       line-height: 1.9;
       color: #aaa9a2;
-      max-width: 440px;
+      max-width: 520px;
       margin-bottom: 56px;
       opacity: 0;
       animation: fadeUp 0.8s ease 0.8s forwards;
@@ -657,11 +696,12 @@
   </nav>
 
   <!-- HERO -->
-  <section id="hero" style="max-width:100%; padding:0; margin:0; display:block;">
+  <section id="hero" style="max-width:100%; padding:0 60px; margin:0; display:flex;">
     <div class="hero-left">
       <p class="hero-eyebrow">Technical Virtual Assistant</p>
-      <h1 class="hero-name">Stepan<br><em>Nikonov</em></h1>
+      <h1 class="hero-name">Stepan<em>Nikonov</em></h1>
       <p class="hero-title">Operations Intelligence, Automated.</p>
+      <div class="hero-divider"></div>
       <p class="hero-summary">
         8 years of operations experience distilled into one hire.
         I replace the gap between your admin routine and your technical needs —
@@ -791,9 +831,9 @@
     </p>
     <div class="gold-rule"></div>
     <div class="contact-links">
-      <a href="mailto:zacadaaa1992@gmail.com" class="contact-link">
+      <a href="/cdn-cgi/l/email-protection#b4ced5d7d5d0d5d5d5858d8d86f4d3d9d5ddd89ad7dbd9" class="contact-link">
         <span class="contact-link-label">Email</span>
-        <span class="contact-link-value">zacadaaa1992@gmail.com</span>
+        <span class="contact-link-value"><span class="__cf_email__" data-cfemail="87fde6e4e6e3e6e6e6b6bebeb5c7e0eae6eeeba9e4e8ea">[email&#160;protected]</span></span>
       </a>
       <div class="contact-divider"></div>
       <a href="https://t.me/zacadaaa1992" target="_blank" class="contact-link">
@@ -815,7 +855,7 @@
     <div class="footer-copy">Technical Virtual Assistant &nbsp;·&nbsp; Philippines</div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Scroll-triggered reveal for timeline items
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -828,14 +868,4 @@
     document.querySelectorAll('.timeline-item').forEach(el => observer.observe(el));
 
     // Subtle parallax on hero photo
-    const heroPhoto = document.querySelector('.hero-photo');
-    if (heroPhoto) {
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        heroPhoto.style.transform = `translateY(${scrollY * 0.2}px)`;
-      }, { passive: true });
-    }
-  </script>
-
-</body>
-</html>
+    const heroPhoto = document.querySelector('.hero-pho
