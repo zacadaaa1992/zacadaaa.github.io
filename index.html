@@ -88,10 +88,11 @@
     /* ── HERO ── */
     #hero {
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr;
+      display: block;
       position: relative;
       overflow: hidden;
+      background: radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.03) 0%, transparent 50%);
     }
 
     .hero-left {
@@ -656,7 +657,7 @@
   </nav>
 
   <!-- HERO -->
-  <section id="hero" style="max-width:100%; padding:0; margin:0;">
+  <section id="hero" style="max-width:100%; padding:0; margin:0; display:block;">
     <div class="hero-left">
       <p class="hero-eyebrow">Technical Virtual Assistant</p>
       <h1 class="hero-name">Stepan<br><em>Nikonov</em></h1>
