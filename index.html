@@ -89,7 +89,7 @@
     #hero {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       position: relative;
       overflow: hidden;
     }
@@ -101,6 +101,7 @@
       padding: 140px 60px 80px 60px;
       position: relative;
       z-index: 2;
+      max-width: 800px;
     }
 
     .hero-eyebrow {
@@ -671,15 +672,6 @@
         <a href="#experience" class="btn-ghost" onclick="event.preventDefault(); document.getElementById('experience').scrollIntoView({behavior:'smooth'})">View Work</a>
       </div>
     </div>
-    <div class="hero-right">
-      <img
-        src="photo.jpg"
-        alt="Stepan Nikonov"
-        class="hero-photo"
-        onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\'hero-photo-placeholder\'></div>';"
-      />
-      <div class="hero-line"></div>
-    </div>
   </section>
 
   <!-- SKILLS -->
@@ -813,7 +805,7 @@
         <span class="contact-link-value">stepan-nikonov</span>
       </a>
     </div>
-    <a href="mailto:zacadaaa1992@gmail.com" class="btn-primary">Get In Touch</a>
+    <a href="https://t.me/zacadaaa1992" target="_blank" class="btn-primary">Get In Touch</a>
   </section>
 
   <!-- FOOTER -->
